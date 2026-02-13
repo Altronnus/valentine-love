@@ -69,10 +69,10 @@
     background: rgba(255,255,255,0.85);
     font-size: 18px;
     cursor: pointer;
-    z-index: 5;
   }
 
   .fade-in { opacity: 0; animation: fadeIn 1s forwards; }
+
   @keyframes fadeIn { to { opacity: 1; } }
 
   .heart {
@@ -80,6 +80,7 @@
     animation: float 5s linear infinite;
     user-select: none;
   }
+
   @keyframes float {
     0% { transform: translateY(100vh); opacity: 0; }
     30% { opacity: 1; }
@@ -95,32 +96,6 @@
   @media (max-width: 400px) {
     button { font-size: 14px; padding: 10px 16px; }
   }
-
-  /* Два пульсирующих сердца под музыкой */
-  #loveHearts {
-    position: fixed;
-    top: 70px; /* чуть ниже кнопки музыки */
-    width: 100%;
-    pointer-events: none;
-    height: 50px;
-  }
-
-  .pulse-heart {
-    position: absolute;
-    font-size: 40px;
-    animation: pulse 1s infinite;
-  }
-
-  .pulse-heart:nth-child(1) { left: calc(50% - 40px); }
-  .pulse-heart:nth-child(2) { left: calc(50% + 20px); }
-
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    25% { transform: scale(1.3); }
-    50% { transform: scale(1); }
-    75% { transform: scale(1.3); }
-    100% { transform: scale(1); }
-  }
 </style>
 </head>
 <body>
@@ -129,12 +104,6 @@
   <source src="love.mp3" type="audio/mpeg">
 </audio>
 <button id="musicBtn">🔊</button>
-
-<!-- Два пульсирующих сердца -->
-<div id="loveHearts">
-  <span class="pulse-heart">💖</span>
-  <span class="pulse-heart">❤️</span>
-</div>
 
 <div class="card">
   <button id="startBtn">Нажми перед ответом 🔊</button>
@@ -146,7 +115,7 @@
 </div>
 
 <script>
-const message = "Ты будешь моей валентинкой? 💕";
+const message = "Ты будешь моей валентинкой? 💕"; // <- поменял текст здесь
 let i = 0;
 
 // Печатающийся текст
@@ -158,10 +127,11 @@ function typing() {
   }
 }
 
-// Кнопка "Нет" убегает
+// Кнопка "Нет" убегает (мышь + сенсор)
 let noAttempts = 0;
 const maxNoAttempts = 5;
 const noBtn = document.getElementById("no");
+
 function moveNoButton() {
   noAttempts++;
   if(noAttempts >= maxNoAttempts){
@@ -190,7 +160,7 @@ document.getElementById("yes").addEventListener("click", () => {
   startHearts();
 });
 
-// Анимация сердечек на фоне
+// Анимация сердечек
 const heartsArray = ["💖","❤️","💕","💘","💝"];
 function startHearts(){
   setInterval(() => {
@@ -218,6 +188,7 @@ musicBtn.onclick = () => {
 const startBtn = document.getElementById("startBtn");
 const textEl = document.getElementById("text");
 const choices = document.getElementById("choices");
+
 startBtn.addEventListener("click", ()=>{
   music.play(); playing=true; musicBtn.innerText="🔈";
   startBtn.style.display="none";
