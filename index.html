@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>💖 Для тебя</title>
+
+<!-- Шрифт Almost Valentine -->
 <style>
 @font-face {
   font-family: 'Almost Valentine';
@@ -36,6 +38,7 @@ body {
   z-index: 10;
 }
 
+/* Кнопки */
 button {
   margin: 8px;
   padding: 12px 20px;
@@ -45,20 +48,10 @@ button {
   cursor: pointer;
   transition: 0.25s;
 }
+#yes { background: white; color: #ff4d6d; position: relative; z-index: 1; }
+#no { background: #ff4d6d; color: white; position: absolute; z-index: 2; }
 
-#yes { 
-  background: white; 
-  color: #ff4d6d; 
-  position: relative; 
-  z-index: 1; 
-}
-#no { 
-  background: #ff4d6d; 
-  color: white; 
-  position: absolute; 
-  z-index: 2; 
-}
-
+/* Кнопка музыки */
 #musicBtn {
   position: fixed;
   top: 15px;
@@ -73,11 +66,17 @@ button {
   z-index: 15;
 }
 
+/* Анимация появления */
 .fade-in { opacity: 0; animation: fadeIn 1s forwards; }
 @keyframes fadeIn { to { opacity: 1; } }
 
+/* Плавающие сердечки */
 .heart { position: absolute; animation: float 5s linear infinite; user-select: none; }
-@keyframes float { 0% { transform: translateY(100vh); opacity: 0; } 30% { opacity:1; } 100% { transform: translateY(-10vh); opacity:0; } }
+@keyframes float { 
+  0% { transform: translateY(100vh); opacity: 0; } 
+  30% { opacity:1; } 
+  100% { transform: translateY(-10vh); opacity:0; } 
+}
 
 img { max-width: 80%; border-radius: 15px; margin-top: 15px; }
 
@@ -103,27 +102,26 @@ img { max-width: 80%; border-radius: 15px; margin-top: 15px; }
 .pulse-heart.left { left: 10%; }
 .pulse-heart.right { right: 10%; }
 @keyframes pulse {
-  0% { transform: scale(1); }
-  25% { transform: scale(1.3); }
-  50% { transform: scale(1); }
-  75% { transform: scale(1.3); }
-  100% { transform: scale(1); }
+  0%,50%,100% { transform: scale(1); }
+  25%,75% { transform: scale(1.3); }
 }
 </style>
 </head>
 <body>
 
+<!-- Музыка -->
 <audio id="music" loop>
   <source src="love.mp3" type="audio/mpeg">
 </audio>
 <button id="musicBtn">🔊</button>
 
-<!-- Два боковых сердца -->
+<!-- Боковые сердца -->
 <div id="sideHearts">
   <span class="pulse-heart left">💖</span>
   <span class="pulse-heart right">❤️</span>
 </div>
 
+<!-- Карточка с вопросом -->
 <div class="card">
   <button id="startBtn">Нажми перед ответом 🔊</button>
   <h2 id="text" style="display:none;"></h2>
@@ -134,7 +132,7 @@ img { max-width: 80%; border-radius: 15px; margin-top: 15px; }
 </div>
 
 <script>
-let message = "Ты будешь моей валентинкой? 💕";
+const message = "Ты будешь моей валентинкой? 💕";
 let i = 0;
 
 // Печатающийся текст
@@ -152,15 +150,16 @@ function typing() {
   typeChar();
 }
 
-// Кнопка "Нет" убегает, а после 5 попыток исчезает
+// Кнопка "Нет" убегает
 let noAttempts = 0;
 const maxNoAttempts = 5;
 const noBtn = document.getElementById("no");
-
 function moveNoButton() {
   noAttempts++;
   if(noAttempts >= maxNoAttempts){
-    noBtn.style.display = "none"; // исчезает
+    noBtn.style.left = "50%";
+    noBtn.style.top = "50%";
+    noBtn.style.transform = "translate(-50%, -50%)";
   } else {
     const x = Math.random()*(window.innerWidth-noBtn.offsetWidth);
     const y = Math.random()*(window.innerHeight-noBtn.offsetHeight-60);
@@ -169,7 +168,6 @@ function moveNoButton() {
     noBtn.style.transform="none";
   }
 }
-
 noBtn.addEventListener("mouseover", moveNoButton);
 noBtn.addEventListener("touchstart", moveNoButton);
 
@@ -184,15 +182,15 @@ document.getElementById("yes").addEventListener("click", () => {
   startHearts();
 });
 
-// Фоновые сердечки
+// Фоновые плавающие сердечки
 const heartsArray = ["💖","❤️","💕","💘","💝"];
 function startHearts(){
   setInterval(()=>{
     const heart = document.createElement("div");
     heart.className="heart";
-    heart.innerText=heartsArray[Math.floor(Math.random()*heartsArray.length)];
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.fontSize=(14+Math.random()*26)+"px";
+    heart.innerText = heartsArray[Math.floor(Math.random()*heartsArray.length)];
+    heart.style.left = Math.random()*100+"vw";
+    heart.style.fontSize = (14+Math.random()*26)+"px";
     document.body.appendChild(heart);
     setTimeout(()=>heart.remove(),5000);
   },300);
@@ -202,18 +200,17 @@ function startHearts(){
 const music=document.getElementById("music");
 const musicBtn=document.getElementById("musicBtn");
 let playing=false;
-musicBtn.onclick=()=>{
-  if(!playing){music.play();musicBtn.innerText="🔈";}
-  else{music.pause();musicBtn.innerText="🔊";}
-  playing=!playing;
+musicBtn.onclick = ()=>{
+  if(!playing){ music.play(); musicBtn.innerText="🔈"; }
+  else { music.pause(); musicBtn.innerText="🔊"; }
+  playing = !playing;
 };
 
 // Старт
 const startBtn=document.getElementById("startBtn");
 const textEl=document.getElementById("text");
 const choices=document.getElementById("choices");
-
-startBtn.addEventListener("click",()=>{
+startBtn.addEventListener("click", ()=>{
   music.play(); 
   playing=true; 
   musicBtn.innerText="🔈";
