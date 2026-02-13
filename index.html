@@ -46,7 +46,7 @@ button {
   transition: 0.25s;
 }
 
-#yes { background: white; color: #ff4d6d; position: relative; z-index: 1; }
+#yes { background: white; color: #ff4d6d; z-index: 1; }
 #no { background: #ff4d6d; color: white; position: absolute; z-index: 2; }
 
 #musicBtn {
@@ -67,11 +67,17 @@ button {
 @keyframes fadeIn { to { opacity: 1; } }
 
 .heart { position: absolute; animation: float 5s linear infinite; user-select: none; }
-@keyframes float { 0% { transform: translateY(100vh); opacity: 0; } 30% { opacity:1; } 100% { transform: translateY(-10vh); opacity:0; } }
+@keyframes float { 
+  0% { transform: translateY(100vh); opacity: 0; } 
+  30% { opacity:1; } 
+  100% { transform: translateY(-10vh); opacity:0; } 
+}
 
 img { max-width: 80%; border-radius: 15px; margin-top: 15px; }
 
-@media(max-width:400px){ button { font-size:14px; padding:10px 16px; } }
+@media(max-width:400px){ 
+  button { font-size:14px; padding:10px 16px; } 
+}
 
 /* Два пульсирующих сердца сбоку */
 #sideHearts {
@@ -97,6 +103,10 @@ img { max-width: 80%; border-radius: 15px; margin-top: 15px; }
   75% { transform: scale(1.3); }
   100% { transform: scale(1); }
 }
+
+/* Центрирование текста и кнопок внутри карточки */
+#text { margin: 15px 0; font-size: 20px; line-height: 1.4; }
+#choices { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
 </style>
 </head>
 <body>
@@ -115,7 +125,7 @@ img { max-width: 80%; border-radius: 15px; margin-top: 15px; }
 <div class="card">
   <button id="startBtn">Нажми перед ответом 🔊</button>
   <h2 id="text" style="display:none;"></h2>
-  <div id="choices" style="margin-top:20px; display:none;">
+  <div id="choices" style="display:none;">
     <button id="yes">Да 💖</button>
     <button id="no">Нет 😈</button>
   </div>
@@ -140,7 +150,7 @@ function typing() {
   typeChar();
 }
 
-// Кнопка "Нет" убегает
+// Кнопка "Нет" убегает корректно
 let noAttempts = 0;
 const maxNoAttempts = 5;
 const noBtn = document.getElementById("no");
@@ -148,11 +158,11 @@ function moveNoButton() {
   noAttempts++;
   if(noAttempts >= maxNoAttempts){
     noBtn.style.left = "50%";
-    noBtn.style.top = "50%";
+    noBtn.style.top = "70%";
     noBtn.style.transform = "translate(-50%, -50%)";
   } else {
-    const x = Math.random()*(window.innerWidth-noBtn.offsetWidth);
-    const y = Math.random()*(window.innerHeight-noBtn.offsetHeight-60);
+    const x = Math.random()*(window.innerWidth-noBtn.offsetWidth-20)+10;
+    const y = Math.random()*(window.innerHeight-noBtn.offsetHeight-100)+50;
     noBtn.style.left = x+"px";
     noBtn.style.top = y+"px";
     noBtn.style.transform="none";
@@ -166,7 +176,7 @@ document.getElementById("yes").addEventListener("click", () => {
   const card = document.querySelector(".card");
   card.innerHTML = `
     <h1>${message}</h1>
-    <p>Ты делаешь меня очень счастливым в любой день недели Радость моя❤️</p>
+    <p>Ты делаешь меня очень счастливым в любой день недели Радость моя! ❤️</p>
     <img src="аргус.jpg" alt="💖">
   `;
   startHearts();
@@ -209,8 +219,6 @@ startBtn.addEventListener("click",()=>{
   setTimeout(()=>{
     choices.style.display="flex";
     choices.classList.add("fade-in");
-    choices.style.justifyContent="center";
-    choices.style.position="relative";
   },2000);
 });
 </script>
