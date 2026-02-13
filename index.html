@@ -30,18 +30,10 @@ body {
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   position: relative;
-  width: 350px;      /* фиксированная ширина для ПК */
-  max-width: 90%;    /* подстраивается под телефоны */
+  width: 90%;
+  max-width: 350px;
   text-align: center;
   z-index: 10;
-  word-wrap: break-word;
-}
-
-/* Текст внутри карточки */
-.card h1, .card h2, .card p {
-  margin: 12px 0;
-  font-size: 20px;      /* базовый размер для ПК */
-  line-height: 1.3;
 }
 
 button {
@@ -90,7 +82,6 @@ button {
 img { max-width: 80%; border-radius: 15px; margin-top: 15px; }
 
 @media(max-width:400px){ 
-  .card h1, .card h2, .card p { font-size: 16px; }
   button { font-size:14px; padding:10px 16px; } 
 }
 
@@ -161,7 +152,7 @@ function typing() {
   typeChar();
 }
 
-// Кнопка "Нет" убегает и исчезает после 5 попыток
+// Кнопка "Нет" убегает, а после 5 попыток исчезает
 let noAttempts = 0;
 const maxNoAttempts = 5;
 const noBtn = document.getElementById("no");
