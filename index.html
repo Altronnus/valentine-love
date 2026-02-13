@@ -1,5 +1,3 @@
-
-Вы сказали:
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -166,11 +164,11 @@ noBtn.addEventListener("touchstart", moveNoButton);
 // Кнопка "Да"
 document.getElementById("yes").addEventListener("click", () => {
   const card = document.querySelector(".card");
-  card.innerHTML = 
+  card.innerHTML = `
     <h1>${message}</h1>
-    <p>Ты делаешь меня очень счастливым в любой день недели Радость моя ❤️</p> 
+    <p>Ты делаешь меня очень счастливым в любой день недели Радость моя❤️</p>
     <img src="аргус.jpg" alt="💖">
-  ;
+  `;
   startHearts();
 });
 
