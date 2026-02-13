@@ -5,12 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>💖 Для тебя</title>
 
+<!-- Шрифт Almost Valentine -->
 <style>
+@font-face {
+  font-family: 'Almost Valentine';
+  src: url('AlmostValentine-Regular.ttf') format('truetype');
+}
 body {
   margin: 0;
   height: 100vh;
   overflow: hidden;
-  font-family: Arial, sans-serif;
+  font-family: 'Almost Valentine', cursive;
   background: linear-gradient(135deg, #ff758c, #ff7eb3);
   display: flex;
   align-items: center;
@@ -63,9 +68,17 @@ button {
   cursor: pointer;
 }
 
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
 .heart {
   position: absolute;
-  color: rgba(255,255,255,0.75);
   animation: float 5s linear infinite;
 }
 
@@ -103,10 +116,9 @@ button {
 
   <div id="choices" style="margin-top:20px; display:none;">
     <button id="yes">Да 💖</button>
-    <button id="no">Нет 😅</button>
+    <button id="no">Нет 😈</button>
   </div>
 </div>
-
 
 <script>
 // Печатающийся текст
@@ -120,29 +132,42 @@ function typing() {
   }
 }
 
-
-// Убегающая кнопка
+// Кнопка "Нет" с попытками
+let noAttempts = 0;
+const maxNoAttempts = 5;
 const noBtn = document.getElementById("no");
+
 noBtn.addEventListener("mouseover", () => {
-  const x = Math.random() * (window.innerWidth - 100);
-  const y = Math.random() * (window.innerHeight - 60);
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
+  noAttempts++;
+  if (noAttempts >= maxNoAttempts) {
+    noBtn.style.left = "50%";
+    noBtn.style.top = "50%";
+    noBtn.style.transform = "translate(-50%, -50%)";
+  } else {
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 60);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  }
 });
 
 // Нажали "Да"
 document.getElementById("yes").addEventListener("click", () => {
   document.querySelector(".card").innerHTML =
-    "<h1>Я знал(а)! 💘</h1><p>Ты делаешь меня очень счастливым в любой день недели СПАСИБО! ❤️</p>";
+    `<h1>Я знал! 💘</h1>
+     <p>Ты делаешь меня очень счастливым в любой день недели ❤️</p>
+     <img src="valentine_photo.jpg" alt="💖" style="width:80%;border-radius:15px;margin-top:15px;">`;
   startHearts();
 });
 
-// Сердечки
+// Несколько видов сердечек
+const heartsArray = ["💖","❤️","💕","💘","💝"];
+
 function startHearts() {
   setInterval(() => {
     const heart = document.createElement("div");
     heart.className = "heart";
-    heart.innerText = "💖";
+    heart.innerText = heartsArray[Math.floor(Math.random() * heartsArray.length)];
     heart.style.left = Math.random() * 100 + "vw";
     heart.style.fontSize = (14 + Math.random() * 26) + "px";
     document.body.appendChild(heart);
@@ -166,30 +191,31 @@ musicBtn.onclick = () => {
   playing = !playing;
 };
 
+// Старт
 const startBtn = document.getElementById("startBtn");
 const textEl = document.getElementById("text");
 const choices = document.getElementById("choices");
 
 startBtn.addEventListener("click", () => {
-  // запускаем музыку
   music.play();
   playing = true;
   musicBtn.innerText = "🔈";
 
-  // убираем стартовую кнопку
   startBtn.style.display = "none";
 
-  // показываем текст и кнопки
+  // Анимация текста
   textEl.style.display = "block";
-  choices.style.display = "block";
+  textEl.classList.add("fade-in");
 
-  // запускаем печать текста
+  // Задержка перед кнопками
+  setTimeout(() => {
+    choices.style.display = "block";
+    choices.classList.add("fade-in");
+  }, 2000);
+
   typing();
 });
 </script>
 
 </body>
 </html>
-
-
-
