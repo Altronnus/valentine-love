@@ -27,6 +27,7 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   position: relative;
   min-width: 260px;
+  z-index: 10;
 }
 
 button {
@@ -61,18 +62,41 @@ button {
   background: rgba(255,255,255,0.85);
   font-size: 18px;
   cursor: pointer;
+  z-index: 15;
 }
 
 .heart {
   position: absolute;
   color: rgba(255,255,255,0.75);
   animation: float 5s linear infinite;
+  user-select: none;
 }
 
 @keyframes float {
   0% { transform: translateY(100vh); opacity: 0; }
   30% { opacity: 1; }
   100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+img {
+  max-width: 80%;
+  border-radius: 15px;
+  margin-top: 15px;
+}
+
+.pulse-heart {
+  position: fixed;
+  font-size: 60px;
+  top: 50%;
+  animation: pulse 1s infinite;
+  user-select: none;
+  z-index: 5;
+}
+.pulse-heart.left { left: 10%; transform: translateY(-50%); }
+.pulse-heart.right { right: 10%; transform: translateY(-50%); }
+@keyframes pulse {
+  0%,50%,100% { transform: scale(1); }
+  25%,75% { transform: scale(1.3); }
 }
 </style>
 </head>
@@ -85,6 +109,10 @@ button {
 </audio>
 
 <button id="musicBtn">🔊</button>
+
+<!-- Боковые пульсирующие сердца -->
+<span class="pulse-heart left">💖</span>
+<span class="pulse-heart right">❤️</span>
 
 <div class="card">
   <h2 id="text"></h2>
@@ -107,7 +135,7 @@ function typing() {
 }
 typing();
 
-// Убегающая кнопка
+// Убегающая кнопка "Нет"
 const noBtn = document.getElementById("no");
 noBtn.addEventListener("mouseover", () => {
   const x = Math.random() * (window.innerWidth - 100);
@@ -118,19 +146,23 @@ noBtn.addEventListener("mouseover", () => {
 
 // Нажали "Да"
 document.getElementById("yes").addEventListener("click", () => {
-  document.querySelector(".card").innerHTML =
-    "<h1>Я знал(а)! 💘</h1><p>Ты делаешь меня очень счастливым(ой) ❤️</p>";
+  document.querySelector(".card").innerHTML = `
+    <h1>Я знал(а)! 💘</h1>
+    <p>Ты делаешь меня очень счастливым в любой день недели Радость моя ❤️</p>
+    <img src="аргус.jpg" alt="💖">
+  `;
   startHearts();
 });
 
-// Сердечки
+// Плавающие сердечки на фоне
 function startHearts() {
   setInterval(() => {
     const heart = document.createElement("div");
     heart.className = "heart";
-    heart.innerText = "💖";
+    const heartsArray = ["💖","❤️","💕","💘","💝"];
+    heart.innerText = heartsArray[Math.floor(Math.random()*heartsArray.length)];
     heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (14 + Math.random() * 26) + "px";
+    heart.style.fontSize = (14 + Math.random()*26) + "px";
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 5000);
   }, 300);
@@ -152,7 +184,7 @@ musicBtn.onclick = () => {
   playing = !playing;
 };
 
-// автозапуск после первого клика
+// Автозапуск музыки после первого клика (браузеры требуют взаимодействия)
 document.body.addEventListener("click", () => {
   if (!playing) {
     music.play();
