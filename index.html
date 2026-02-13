@@ -11,6 +11,7 @@
   font-family: 'Almost Valentine';
   src: url('AlmostValentine-Regular.ttf') format('truetype');
 }
+
 body {
   margin: 0;
   height: 100vh;
@@ -32,16 +33,18 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   position: relative;
   min-width: 260px;
+  max-width: 90%;
 }
 
 button {
   margin: 10px;
-  padding: 10px 22px;
+  padding: 12px 28px;
   border: none;
-  border-radius: 20px;
+  border-radius: 25px;
   font-size: 16px;
   cursor: pointer;
   transition: 0.25s;
+  min-width: 100px;
 }
 
 #yes {
@@ -86,6 +89,19 @@ button {
   0% { transform: translateY(100vh); opacity: 0; }
   30% { opacity: 1; }
   100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* Мобильная адаптация кнопок */
+@media (max-width: 500px) {
+  #choices {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+  }
+  #no, #yes {
+    position: static !important;
+    width: 70%;
+  }
 }
 </style>
 </head>
@@ -156,7 +172,7 @@ document.getElementById("yes").addEventListener("click", () => {
   document.querySelector(".card").innerHTML =
     `<h1>Я знал! 💘</h1>
      <p>Ты делаешь меня очень счастливым в любой день недели ❤️</p>
-     <img src="аргус.jpg" alt="💖" style="width:80%;border-radius:15px;margin-top:15px;">`;
+     <img src="38758f77-8654-4ab4-a05c-e21c90fc5cf9.png" alt="💖" style="width:80%;border-radius:15px;margin-top:15px;">`;
   startHearts();
 });
 
@@ -209,7 +225,7 @@ startBtn.addEventListener("click", () => {
 
   // Задержка перед кнопками
   setTimeout(() => {
-    choices.style.display = "block";
+    choices.style.display = "flex";
     choices.classList.add("fade-in");
   }, 2000);
 
@@ -219,4 +235,3 @@ startBtn.addEventListener("click", () => {
 
 </body>
 </html>
-
