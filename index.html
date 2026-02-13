@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>💖 Для тебя</title>
-  <!-- Шрифт Almost Valentine -->
   <style>
     @font-face {
       font-family: 'Almost Valentine';
@@ -109,9 +108,9 @@
   </div>
 
   <script>
-    // Печатающийся текст
     const message = "Ты будешь моей валентинкой? 💕";
     let i = 0;
+
     function typing() {
       if (i < message.length) {
         document.getElementById("text").innerHTML += message.charAt(i);
@@ -120,7 +119,7 @@
       }
     }
 
-    // Кнопка "Нет" с улетанием
+    // Кнопка "Нет"
     let noAttempts = 0;
     const maxNoAttempts = 5;
     const noBtn = document.getElementById("no");
@@ -135,12 +134,14 @@
         const y = Math.random() * (window.innerHeight - 60);
         noBtn.style.left = x + "px";
         noBtn.style.top = y + "px";
+        noBtn.style.transform = "none";
       }
     });
 
     // Нажали "Да"
     document.getElementById("yes").addEventListener("click", () => {
-      document.querySelector(".card").innerHTML = `
+      const card = document.querySelector(".card");
+      card.innerHTML = `
         <h1>Я таки знал! 💘</h1>
         <p>Ты делаешь меня очень счастливым в любой день недели ❤️</p>
         <img src="аргус.jpg" alt="💖" style="width:80%;border-radius:15px;margin-top:15px;">
@@ -148,7 +149,6 @@
       startHearts();
     });
 
-    // Несколько видов сердечек
     const heartsArray = ["💖","❤️","💕","💘","💝"];
     function startHearts() {
       setInterval(() => {
@@ -181,6 +181,7 @@
     const startBtn = document.getElementById("startBtn");
     const textEl = document.getElementById("text");
     const choices = document.getElementById("choices");
+
     startBtn.addEventListener("click", () => {
       music.play();
       playing = true;
@@ -195,5 +196,6 @@
       }, 2000);
     });
   </script>
+
 </body>
 </html>
