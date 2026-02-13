@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>💖 Для тебя</title>
 <style>
-  /* Шрифт с fallback */
   @font-face {
     font-family: 'Almost Valentine';
     src: url('AlmostValentine-Regular.ttf') format('truetype');
@@ -72,14 +71,9 @@
     cursor: pointer;
   }
 
-  .fade-in {
-    opacity: 0;
-    animation: fadeIn 1s forwards;
-  }
+  .fade-in { opacity: 0; animation: fadeIn 1s forwards; }
 
-  @keyframes fadeIn {
-    to { opacity: 1; }
-  }
+  @keyframes fadeIn { to { opacity: 1; } }
 
   .heart {
     position: absolute;
@@ -106,7 +100,6 @@
 </head>
 <body>
 
-<!-- Музыка -->
 <audio id="music" loop>
   <source src="love.mp3" type="audio/mpeg">
 </audio>
@@ -122,9 +115,10 @@
 </div>
 
 <script>
-const message = "Ты будешь моей валентинкой? 💕";
+const message = "Ты будешь моей валентинкой? 💕"; // <- поменял текст здесь
 let i = 0;
 
+// Печатающийся текст
 function typing() {
   if(i < message.length) {
     document.getElementById("text").innerHTML += message.charAt(i);
@@ -152,7 +146,6 @@ function moveNoButton() {
     noBtn.style.transform = "none";
   }
 }
-
 noBtn.addEventListener("mouseover", moveNoButton);
 noBtn.addEventListener("touchstart", moveNoButton);
 
@@ -160,8 +153,8 @@ noBtn.addEventListener("touchstart", moveNoButton);
 document.getElementById("yes").addEventListener("click", () => {
   const card = document.querySelector(".card");
   card.innerHTML = `
-    <h1>Я так и знал! 💘</h1>
-    <p>Ты делаешь меня очень счастливым в любой день недели Радость моя❤️</p>
+    <h1>${message}</h1>
+    <p>Ты делаешь меня очень счастливым в любой день недели Радость моя ❤️</p>
     <img src="аргус.jpg" alt="💖">
   `;
   startHearts();
@@ -173,7 +166,7 @@ function startHearts(){
   setInterval(() => {
     const heart = document.createElement("div");
     heart.className = "heart";
-    heart.innerText = heartsArray[Math.floor(Math.random() * heartsArray.length)];
+    heart.innerText = heartsArray[Math.floor(Math.random()*heartsArray.length)];
     heart.style.left = Math.random()*100 + "vw";
     heart.style.fontSize = (14 + Math.random()*26) + "px";
     document.body.appendChild(heart);
@@ -213,4 +206,3 @@ startBtn.addEventListener("click", ()=>{
 
 </body>
 </html>
-
