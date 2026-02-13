@@ -22,6 +22,7 @@
     justify-content: center;
     text-align: center;
     color: white;
+    position: relative;
   }
 
   .card {
@@ -33,6 +34,7 @@
     position: relative;
     width: 90%;
     max-width: 350px;
+    z-index: 1; /* Картинка и текст ниже сердечек */
   }
 
   button {
@@ -70,6 +72,7 @@
     background: rgba(255,255,255,0.85);
     font-size: 18px;
     cursor: pointer;
+    z-index: 3;
   }
 
   .fade-in {
@@ -82,9 +85,11 @@
   }
 
   .heart {
-    position: absolute;
+    position: fixed;
     animation: float 5s linear infinite;
     user-select: none;
+    z-index: 999; /* Всегда на переднем плане */
+    pointer-events: none; /* Чтобы не мешали кнопкам */
   }
 
   @keyframes float {
@@ -97,6 +102,8 @@
     max-width: 80%;
     border-radius: 15px;
     margin-top: 15px;
+    z-index: 1;
+    position: relative;
   }
 
   @media (max-width: 400px) {
