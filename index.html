@@ -87,12 +87,26 @@ button {
 <button id="musicBtn">🔊</button>
 
 <div class="card">
-  <h2 id="text"></h2>
-  <div style="margin-top:20px;">
+  <button id="startBtn" style="
+    padding: 15px 25px;
+    font-size: 18px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    background: white;
+    color: #ff4d6d;
+  ">
+    Нажми перед ответом 💖
+  </button>
+
+  <h2 id="text" style="display:none;"></h2>
+
+  <div id="choices" style="margin-top:20px; display:none;">
     <button id="yes">Да 💖</button>
     <button id="no">Нет 😅</button>
   </div>
 </div>
+
 
 <script>
 // Печатающийся текст
@@ -105,7 +119,7 @@ function typing() {
     setTimeout(typing, 60);
   }
 }
-typing();
+
 
 // Убегающая кнопка
 const noBtn = document.getElementById("no");
@@ -152,16 +166,29 @@ musicBtn.onclick = () => {
   playing = !playing;
 };
 
-// автозапуск после первого клика
-document.body.addEventListener("click", () => {
-  if (!playing) {
-    music.play();
-    playing = true;
-    musicBtn.innerText = "🔈";
-  }
-}, { once: true });
+const startBtn = document.getElementById("startBtn");
+const textEl = document.getElementById("text");
+const choices = document.getElementById("choices");
+
+startBtn.addEventListener("click", () => {
+  // запускаем музыку
+  music.play();
+  playing = true;
+  musicBtn.innerText = "🔈";
+
+  // убираем стартовую кнопку
+  startBtn.style.display = "none";
+
+  // показываем текст и кнопки
+  textEl.style.display = "block";
+  choices.style.display = "block";
+
+  // запускаем печать текста
+  typing();
+});
 </script>
 
 </body>
 </html>
+
 
