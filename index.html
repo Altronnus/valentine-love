@@ -1,3 +1,5 @@
+
+Вы сказали:
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -46,18 +48,8 @@ button {
   transition: 0.25s;
 }
 
-#yes { 
-  background: white; 
-  color: #ff4d6d; 
-  position: relative; 
-  z-index: 1; 
-}
-#no { 
-  background: #ff4d6d; 
-  color: white; 
-  position: absolute; 
-  z-index: 2; 
-}
+#yes { background: white; color: #ff4d6d; position: relative; z-index: 1; }
+#no { background: #ff4d6d; color: white; position: absolute; z-index: 2; }
 
 #musicBtn {
   position: fixed;
@@ -81,9 +73,7 @@ button {
 
 img { max-width: 80%; border-radius: 15px; margin-top: 15px; }
 
-@media(max-width:400px){ 
-  button { font-size:14px; padding:10px 16px; } 
-}
+@media(max-width:400px){ button { font-size:14px; padding:10px 16px; } }
 
 /* Два пульсирующих сердца сбоку */
 #sideHearts {
@@ -152,15 +142,16 @@ function typing() {
   typeChar();
 }
 
-// Кнопка "Нет" убегает, а после 5 попыток исчезает
+// Кнопка "Нет" убегает
 let noAttempts = 0;
 const maxNoAttempts = 5;
 const noBtn = document.getElementById("no");
-
 function moveNoButton() {
   noAttempts++;
   if(noAttempts >= maxNoAttempts){
-    noBtn.style.display = "none"; // исчезает
+    noBtn.style.left = "50%";
+    noBtn.style.top = "50%";
+    noBtn.style.transform = "translate(-50%, -50%)";
   } else {
     const x = Math.random()*(window.innerWidth-noBtn.offsetWidth);
     const y = Math.random()*(window.innerHeight-noBtn.offsetHeight-60);
@@ -169,18 +160,17 @@ function moveNoButton() {
     noBtn.style.transform="none";
   }
 }
-
 noBtn.addEventListener("mouseover", moveNoButton);
 noBtn.addEventListener("touchstart", moveNoButton);
 
 // Кнопка "Да"
 document.getElementById("yes").addEventListener("click", () => {
   const card = document.querySelector(".card");
-  card.innerHTML = `
+  card.innerHTML = 
     <h1>${message}</h1>
-    <p>Ты делаешь меня очень счастливым в любой день недели ❤️</p>
+    <p>Ты делаешь меня очень счастливым в любой день недели Радость моя ❤️</p> 
     <img src="аргус.jpg" alt="💖">
-  `;
+  ;
   startHearts();
 });
 
@@ -212,11 +202,8 @@ musicBtn.onclick=()=>{
 const startBtn=document.getElementById("startBtn");
 const textEl=document.getElementById("text");
 const choices=document.getElementById("choices");
-
 startBtn.addEventListener("click",()=>{
-  music.play(); 
-  playing=true; 
-  musicBtn.innerText="🔈";
+  music.play(); playing=true; musicBtn.innerText="🔈";
   startBtn.style.display="none";
   textEl.style.display="block";
   textEl.classList.add("fade-in");
