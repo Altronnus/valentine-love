@@ -19,12 +19,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
   color: white;
 }
 
 .card {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.2);
   padding: 25px 20px 35px;
   border-radius: 22px;
   backdrop-filter: blur(10px);
@@ -32,6 +31,8 @@ body {
   position: relative;
   width: 90%;
   max-width: 350px;
+  text-align: center;
+  z-index: 10;
 }
 
 button {
@@ -44,19 +45,8 @@ button {
   transition: 0.25s;
 }
 
-#yes {
-  background: white;
-  color: #ff4d6d;
-  position: relative;
-  z-index: 1;
-}
-
-#no {
-  background: #ff4d6d;
-  color: white;
-  position: absolute;
-  z-index: 2;
-}
+#yes { background: white; color: #ff4d6d; }
+#no { background: #ff4d6d; color: white; position: absolute; }
 
 #musicBtn {
   position: fixed;
@@ -69,50 +59,38 @@ button {
   background: rgba(255,255,255,0.85);
   font-size: 18px;
   cursor: pointer;
-  z-index: 5;
+  z-index: 15;
 }
 
 .fade-in { opacity: 0; animation: fadeIn 1s forwards; }
 @keyframes fadeIn { to { opacity: 1; } }
 
-.heart {
-  position: absolute;
-  animation: float 5s linear infinite;
-  user-select: none;
-}
-@keyframes float {
-  0% { transform: translateY(100vh); opacity: 0; }
-  30% { opacity: 1; }
-  100% { transform: translateY(-10vh); opacity: 0; }
-}
+.heart { position: absolute; animation: float 5s linear infinite; user-select: none; }
+@keyframes float { 0% { transform: translateY(100vh); opacity: 0; } 30% { opacity:1; } 100% { transform: translateY(-10vh); opacity:0; } }
 
-img {
-  max-width: 80%;
-  border-radius: 15px;
-  margin-top: 15px;
-}
+img { max-width: 80%; border-radius: 15px; margin-top: 15px; }
 
-@media (max-width: 400px) {
-  button { font-size: 14px; padding: 10px 16px; }
-}
+@media(max-width:400px){ button { font-size:14px; padding:10px 16px; } }
 
-/* Два пульсирующих сердца под музыкой */
-#loveHearts {
+/* Два пульсирующих сердца слева и справа */
+#sideHearts {
   position: fixed;
-  top: 70px;
+  top: 50%;
   width: 100%;
+  height: 0;
   pointer-events: none;
-  height: 50px;
+  z-index: 5;
 }
 
 .pulse-heart {
   position: absolute;
-  font-size: 40px;
+  font-size: 60px;
   animation: pulse 1s infinite;
+  top: -30px;
 }
 
-.pulse-heart:nth-child(1) { left: calc(50% - 50px); }
-.pulse-heart:nth-child(2) { left: calc(50% + 20px); }
+.pulse-heart.left { left: 10%; }
+.pulse-heart.right { right: 10%; }
 
 @keyframes pulse {
   0% { transform: scale(1); }
@@ -130,10 +108,10 @@ img {
 </audio>
 <button id="musicBtn">🔊</button>
 
-<!-- Пульсирующие сердца -->
-<div id="loveHearts">
-  <span class="pulse-heart">💖</span>
-  <span class="pulse-heart">❤️</span>
+<!-- Два пульсирующих сердца сбоку -->
+<div id="sideHearts">
+  <span class="pulse-heart left">💖</span>
+  <span class="pulse-heart right">❤️</span>
 </div>
 
 <div class="card">
@@ -149,10 +127,9 @@ img {
 let message = "Ты будешь моей валентинкой? 💕";
 let i = 0;
 
-// Печатающийся текст
 function typing() {
   const textEl = document.getElementById("text");
-  textEl.innerHTML = ""; // очищаем перед анимацией
+  textEl.innerHTML = ""; // очищаем текст
   i = 0;
   function typeChar() {
     if(i < message.length) {
@@ -164,7 +141,7 @@ function typing() {
   typeChar();
 }
 
-// Кнопка "Нет" убегает
+// Кнопка "Нет"
 let noAttempts = 0;
 const maxNoAttempts = 5;
 const noBtn = document.getElementById("no");
@@ -175,17 +152,17 @@ function moveNoButton() {
     noBtn.style.top = "50%";
     noBtn.style.transform = "translate(-50%, -50%)";
   } else {
-    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 60);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-    noBtn.style.transform = "none";
+    const x = Math.random()*(window.innerWidth-noBtn.offsetWidth);
+    const y = Math.random()*(window.innerHeight-noBtn.offsetHeight-60);
+    noBtn.style.left = x+"px";
+    noBtn.style.top = y+"px";
+    noBtn.style.transform="none";
   }
 }
 noBtn.addEventListener("mouseover", moveNoButton);
 noBtn.addEventListener("touchstart", moveNoButton);
 
-// Нажали "Да"
+// Кнопка "Да"
 document.getElementById("yes").addEventListener("click", () => {
   const card = document.querySelector(".card");
   card.innerHTML = `
@@ -196,35 +173,35 @@ document.getElementById("yes").addEventListener("click", () => {
   startHearts();
 });
 
-// Анимация сердечек на фоне
+// Фоновые сердечки
 const heartsArray = ["💖","❤️","💕","💘","💝"];
 function startHearts(){
-  setInterval(() => {
+  setInterval(()=>{
     const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = heartsArray[Math.floor(Math.random()*heartsArray.length)];
-    heart.style.left = Math.random()*100 + "vw";
-    heart.style.fontSize = (14 + Math.random()*26) + "px";
+    heart.className="heart";
+    heart.innerText=heartsArray[Math.floor(Math.random()*heartsArray.length)];
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(14+Math.random()*26)+"px";
     document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(), 5000);
-  }, 300);
+    setTimeout(()=>heart.remove(),5000);
+  },300);
 }
 
 // Музыка
-const music = document.getElementById("music");
-const musicBtn = document.getElementById("musicBtn");
-let playing = false;
-musicBtn.onclick = () => {
-  if(!playing){ music.play(); musicBtn.innerText="🔈"; }
-  else { music.pause(); musicBtn.innerText="🔊"; }
-  playing = !playing;
+const music=document.getElementById("music");
+const musicBtn=document.getElementById("musicBtn");
+let playing=false;
+musicBtn.onclick=()=>{
+  if(!playing){music.play();musicBtn.innerText="🔈";}
+  else{music.pause();musicBtn.innerText="🔊";}
+  playing=!playing;
 };
 
 // Старт
-const startBtn = document.getElementById("startBtn");
-const textEl = document.getElementById("text");
-const choices = document.getElementById("choices");
-startBtn.addEventListener("click", ()=>{
+const startBtn=document.getElementById("startBtn");
+const textEl=document.getElementById("text");
+const choices=document.getElementById("choices");
+startBtn.addEventListener("click",()=>{
   music.play(); playing=true; musicBtn.innerText="🔈";
   startBtn.style.display="none";
   textEl.style.display="block";
@@ -235,7 +212,7 @@ startBtn.addEventListener("click", ()=>{
     choices.classList.add("fade-in");
     choices.style.justifyContent="center";
     choices.style.position="relative";
-  }, 2000);
+  },2000);
 });
 </script>
 
